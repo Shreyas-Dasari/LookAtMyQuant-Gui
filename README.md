@@ -1,42 +1,27 @@
 # LookAtMyQuant Launcher
 
-A modern macOS desktop companion for `lookatmyquant` to manage local models, check RAM fit, and run an OpenAI/Anthropic-compatible inference server without touching the terminal.
+A Mac desktop app for `shinmegamiboson` models. Pick a checkpoint, start a local server on port 8080, and point your tools at it.
 
-## Install via Homebrew
+## Install with Homebrew
 
 ```bash
 brew tap Shreyas-Dasari/lookatmyquant-gui
 brew install --cask --no-quarantine lookatmyquant-gui
 ```
 
-Requires macOS 11+ on Apple Silicon. Homebrew installs `uv` automatically; on first launch, click **Install Dependencies** in the setup overlay to create your local Python MLX environment.
+The app bundle is unsigned. That is why `--no-quarantine` matters, since macOS Gatekeeper blocks unsigned downloads and calls them damaged. Homebrew installs `uv` for you automatically, and on first launch an overlay locks the window until you click **Install Dependencies** to pull Python 3.12, `mlx`, `mlx-lm`, `huggingface-hub`, and `lookatmyquant` into a local virtual environment.
 
-## Features
+## What the app does
 
-- **One-Click Server Control**: Start and stop the local inference server, monitor uptime, and track dependency updates for `lookatmyquant` and MLX.
-- **Visual Model Manager**: Browse local models and speculative drafters in a clean dual-column view.
-- **Smart RAM Estimator**: Color-coded fit indicators (green/yellow/red) compare estimated model memory against your Mac's total RAM.
-- **Built-in Model Downloader**: Browse and download quantized models from `shinmegamiboson` on Hugging Face directly inside the app.
-- **Live System & Log Monitoring**: View hardware readout, RAM usage, thermal state, real-time server logs, and copy OpenAI / Anthropic endpoints with one click.
-- **Automatic First-Run Setup**: Guided dependency installer sets up `mlx`, `mlx-lm`, `huggingface-hub`, and `lookatmyquant` on first launch.
+Models and speculative drafters sit side by side in the Models tab. Each entry compares estimated memory against your Mac's total RAM with a green, yellow, or red dot, and the built-in downloader grabs new checkpoints straight from `shinmegamiboson` on Hugging Face. Live logs stream in the Server tab. You can also check for upstream `lookatmyquant` updates on the Status page, track chip RAM and thermal state, or copy local API URLs with one click.
 
 ## Credits
 
-- **[lookatmyquant](https://github.com/ShinMegamiBoson/lookatmyquant)** by ShinMegamiBoson — Quantization compiler, packed model formats, and Apple Silicon MLX runtime.
-- **[mlx-lm](https://github.com/ml-explore/mlx-lm)** & **[mlx](https://github.com/ml-explore/mlx)** — Apple Silicon ML framework and LLM inference foundation.
+All inference runs on upstream code. [LookAtMyQuant](https://github.com/ShinMegamiBoson/lookatmyquant) by ShinMegamiBoson does the real work with its quantization compiler, packed formats, and Apple Silicon engine, backed by [mlx-lm](https://github.com/ml-explore/mlx-lm) and [mlx](https://github.com/ml-explore/mlx) on Metal.
 
----
+## Build it yourself
 
-## Running from Source
-
-### Prerequisites
-
-- macOS 11+ on Apple Silicon (`arm64`)
-- Rust (latest stable)
-- Node.js 20+ and npm
-- `uv` (`brew install uv`) or Python 3.10+ (`3.12` recommended)
-
-### Development Mode
+You need an Apple Silicon Mac on macOS 11+, Rust, Node.js 20+, and `uv` or Python 3.10+. Start dev mode like this:
 
 ```bash
 cd lookatmyquant-tauri
@@ -44,20 +29,8 @@ npm install
 npm run tauri dev
 ```
 
-### Build `.app` / `.dmg`
-
-```bash
-cd lookatmyquant-tauri
-npm install
-npm run tauri build
-```
-
-Built bundles are written to:
-- `.app`: `lookatmyquant-tauri/src-tauri/target/release/bundle/macos/LookAtMyQuant Launcher.app`
-- `.dmg`: `lookatmyquant-tauri/src-tauri/target/release/bundle/dmg/`
-
-Or run `./scripts/package-release.sh` to build the `.dmg` and update the cask SHA256 automatically.
+Run `npm run tauri build` inside `lookatmyquant-tauri` to create a standalone `.app` and `.dmg`, or run `./scripts/package-release.sh` from the root. Files land in `lookatmyquant-tauri/src-tauri/target/release/bundle/macos/LookAtMyQuant Launcher.app` and `lookatmyquant-tauri/src-tauri/target/release/bundle/dmg/`. Moving a self-built app across Macs or installing it through a local cask still triggers macOS quarantine. Pass `--no-quarantine` to `brew`, or strip the flag directly with `xattr -cr "/Applications/LookAtMyQuant Launcher.app"`.
 
 ## License
 
-Copyright © 2026 Shreyas Dasari. Released under the [MIT License](LICENSE).
+Copyright 2026 Shreyas Dasari. MIT License, see [LICENSE](LICENSE).
