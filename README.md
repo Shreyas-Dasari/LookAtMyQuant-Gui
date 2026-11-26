@@ -6,10 +6,10 @@ A Mac desktop app for `shinmegamiboson` models. Pick a checkpoint, start a local
 
 ```bash
 brew tap Shreyas-Dasari/lookatmyquant-gui
-brew install --cask --no-quarantine lookatmyquant-gui
+brew install --cask lookatmyquant-gui
 ```
 
-The app bundle is unsigned. That is why `--no-quarantine` matters, since macOS Gatekeeper blocks unsigned downloads and calls them damaged. Homebrew installs `uv` for you automatically, and on first launch an overlay locks the window until you click **Install Dependencies** to pull Python 3.12, `mlx`, `mlx-lm`, `huggingface-hub`, and `lookatmyquant` into a local virtual environment.
+The app bundle is unsigned. Older Homebrew versions quarantine unsigned downloads and fail on launch, so add `--no-quarantine` to `brew install` if you hit that error (Homebrew 7+ removed the flag and skips quarantining by default). If macOS Gatekeeper still complains after a manual download or self-build, run `xattr -cr "/Applications/LookAtMyQuant Launcher.app"`. Homebrew installs `uv` for you automatically, and on first launch an overlay locks the window until you click **Install Dependencies** to pull Python 3.12, `mlx`, `mlx-lm`, `huggingface-hub`, and `lookatmyquant` into a local virtual environment.
 
 ## What the app does
 
@@ -29,7 +29,7 @@ npm install
 npm run tauri dev
 ```
 
-Run `npm run tauri build` inside `lookatmyquant-tauri` to create a standalone `.app` and `.dmg`, or run `./scripts/package-release.sh` from the root. Files land in `lookatmyquant-tauri/src-tauri/target/release/bundle/macos/LookAtMyQuant Launcher.app` and `lookatmyquant-tauri/src-tauri/target/release/bundle/dmg/`. Moving a self-built app across Macs or installing it through a local cask still triggers macOS quarantine. Pass `--no-quarantine` to `brew`, or strip the flag directly with `xattr -cr "/Applications/LookAtMyQuant Launcher.app"`.
+Run `npm run tauri build` inside `lookatmyquant-tauri` to create a standalone `.app` and `.dmg`, or run `./scripts/package-release.sh` from the root. Files land in `lookatmyquant-tauri/src-tauri/target/release/bundle/macos/LookAtMyQuant Launcher.app` and `lookatmyquant-tauri/src-tauri/target/release/bundle/dmg/`. Moving a self-built app across Macs or downloading the `.dmg` through a browser triggers macOS quarantine. Run `xattr -cr "/Applications/LookAtMyQuant Launcher.app"` to clear it, or pass `--no-quarantine` if you install your own build via an older Homebrew version.
 
 ## License
 
