@@ -6,10 +6,11 @@ A Mac desktop app for `shinmegamiboson` models. Pick a checkpoint, start a local
 
 ```bash
 brew tap Shreyas-Dasari/lookatmyquant-gui
+brew trust shreyas-dasari/lookatmyquant-gui
 brew install --cask lookatmyquant-gui
 ```
 
-The app bundle is unsigned. Older Homebrew versions quarantine unsigned downloads and fail on launch, so add `--no-quarantine` to `brew install` if you hit that error (Homebrew 7+ removed the flag and skips quarantining by default). If macOS Gatekeeper still complains after a manual download or self-build, run `xattr -cr "/Applications/LookAtMyQuant Launcher.app"`. Homebrew installs `uv` for you automatically, and on first launch an overlay locks the window until you click **Install Dependencies** to pull Python 3.12, `mlx`, `mlx-lm`, `huggingface-hub`, and `lookatmyquant` into a local virtual environment.
+The app bundle is unsigned. Homebrew 7 requires `brew trust` because the cask runs a `postflight_steps` hook that strips macOS quarantine and re-signs the app locally. Homebrew installs `uv` for you automatically, and on first launch an overlay locks the window until you click **Install Dependencies** to pull Python 3.12, `mlx`, `mlx-lm`, `huggingface-hub`, and `lookatmyquant` into a local virtual environment.
 
 ## What the app does
 
